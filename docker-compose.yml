@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - webnet
+
+  portal:
+    build: portal/.
+    container_name: portal
+    working_dir: /app/portal
+    volumes:
+      - ./portal:/app/portal
+    ports:
+      - "15000:15000"
+    command: npm run dev
+    networks:
+      - webnet
+
+  application1:
+    build: application1/.
+    container_name: application1
+    working_dir: /app/application1
+    volumes:
+      - ./application1:/app/application1
+    ports:
+      - "15001:15000"
+    command: npm run dev
+    networks:
+      - webnet
+
+networks:
+  webnet:
